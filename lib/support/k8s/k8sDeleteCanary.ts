@@ -1,9 +1,10 @@
 import {Deferred} from "@atomist/automation-client/lib/internal/util/Deferred";
 import {
-    DefaultGoalNameGenerator, execPromise, goal,
+    DefaultGoalNameGenerator, goal,
 } from "@atomist/sdm";
 import {KubernetesApplication} from "@atomist/sdm-pack-k8s";
 import {deleteApplication} from "@atomist/sdm-pack-k8s/lib/kubernetes/application";
+import * as k8s from "@kubernetes/client-node";
 import * as _ from "lodash";
 import {GetGoalData, GetGoalSetGoalNames} from "../../typings/types";
 
@@ -45,6 +46,9 @@ export const k8sDeleteCanary = goal({
     /**
      * For the discovered deployment, wait until all unavailableReplicas has moved to 0, if this doesn't happen within 60 seconds, fail
      */
+    const kc = new k8s.KubeConfig();
+    kc.loadFromDefault();
+    const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
     const result = new Deferred<string>();
     const times = 20;
     let counter = 0;
@@ -54,16 +58,8 @@ export const k8sDeleteCanary = goal({
         }
 
         g.progressLog.write(`Testing if ${deployInfo.name} has converged`);
-
-        // TODO: Replace with kubernetes/client call
-        const output = await execPromise(
-            "kubectl",
-            ["get", "deployment", "-n", "production", deployInfo.name, "-o", "json"],
-        );
-
-        // @ts-ignore
-        const parsed = JSON.parse(output.stdout);
-        if (!parsed.status.hasOwnProperty("unavailableReplicas")) {
+        const state = await k8sApi.readNamespacedDeployment(deployInfo.name, deployInfo.ns);
+        if (state.body.status.unavailableReplicas === undefined) {
             g.progressLog.write(`${deployInfo.name} has converged, proceeding with canary cleanup`);
             result.resolve(true);
         } else {

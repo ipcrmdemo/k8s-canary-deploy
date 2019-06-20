@@ -20,7 +20,7 @@ import {
     SoftwareDeliveryMachineConfiguration, ToDefaultBranch, whenPushSatisfies,
 } from "@atomist/sdm";
 import {
-    createSoftwareDeliveryMachine,
+    createSoftwareDeliveryMachine, goalStateSupport,
 } from "@atomist/sdm-core";
 import {HasDockerfile} from "@atomist/sdm-pack-docker";
 import {k8sSupport} from "@atomist/sdm-pack-k8s";
@@ -51,6 +51,7 @@ export function machine(
      */
     sdm.addExtensionPacks(
         k8sSupport(),
+        goalStateSupport(),
     );
 
     /**
