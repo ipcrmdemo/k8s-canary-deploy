@@ -2,7 +2,7 @@
   <img src="https://images.atomist.com/sdm/SDM-Logo-Dark.png">
 </p>
 
-# ipcrmdemo/k8s-bg-deploy
+# ipcrmdemo/k8s-canary-deploy
 
 ## Getting started
 
