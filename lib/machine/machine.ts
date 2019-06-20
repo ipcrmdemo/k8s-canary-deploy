@@ -25,6 +25,7 @@ import {
 import {HasDockerfile} from "@atomist/sdm-pack-docker";
 import {k8sSupport} from "@atomist/sdm-pack-k8s";
 import {IsNode} from "@atomist/sdm-pack-node";
+import {k8sDeleteCanary} from "../support/k8s/k8sDeleteCanary";
 import {
     addGoalImplementations,
     dockerBuildGoal, k8sCanary10Deploy, k8sCanary50Deploy, k8sProductionDeploy,
@@ -62,7 +63,8 @@ export function machine(
     const k8sCanaryDeploy = goals("k8s-canary")
         .plan(k8sCanary10Deploy).after(buildGoals)
         .plan(k8sCanary50Deploy).after(k8sCanary10Deploy)
-        .plan(k8sProductionDeploy).after(k8sCanary50Deploy);
+        .plan(k8sProductionDeploy).after(k8sCanary50Deploy)
+        .plan(k8sDeleteCanary).after(k8sProductionDeploy);
 
     /**
      * Define Push Rules

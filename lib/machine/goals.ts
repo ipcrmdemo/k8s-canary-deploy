@@ -4,7 +4,7 @@ import {DockerBuild} from "@atomist/sdm-pack-docker";
 import {KubernetesDeploy} from "@atomist/sdm-pack-k8s";
 import {IsNode, NodeProjectVersioner, NpmInstallProjectListener} from "@atomist/sdm-pack-node";
 import {k8sCallback} from "../support/k8s/callback";
-import {cleanupCanaryListener, K8sCanaryDeploy} from "../support/k8s/k8sCanaryDeploy";
+import {K8sCanaryDeploy} from "../support/k8s/k8sCanaryDeploy";
 import {NpmCompileProjectListener} from "../support/node/compileProjectListener";
 
 export const nodeVersion = new Version().withVersioner(NodeProjectVersioner);
@@ -33,6 +33,5 @@ export function addGoalImplementations(sdm: SoftwareDeliveryMachine): SoftwareDe
         .withProjectListener(cacheRestore(NodeModulesCacheOptions))
         .withProjectListener(cacheRemove(NodeModulesCacheOptions));
 
-    sdm.addGoalCompletionListener(cleanupCanaryListener);
     return sdm;
 }

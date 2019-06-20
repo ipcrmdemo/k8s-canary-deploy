@@ -1,0 +1,5 @@
+query GetGoalData ($goalName:String!, $goalSetId:String!) {
+    SdmGoal(uniqueName: [$goalName], goalSetId: [$goalSetId]) {
+        data
+    }
+}
