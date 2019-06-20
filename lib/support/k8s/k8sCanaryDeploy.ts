@@ -10,7 +10,6 @@ import {
     getGoalDefinitionFrom,
     Goal, GoalCompletionListener,
     GoalDefinition,
-    GoalExecutionListener,
     GoalInvocation,
     SdmGoalState,
 } from "@atomist/sdm";
@@ -148,9 +147,3 @@ export const cleanupCanaryListener: GoalCompletionListener = async l => {
         }
     }
 };
-
-function wait(seconds: number): Promise<void> {
-    return new Promise<void>(resolve => {
-        setTimeout(resolve, seconds * 1000);
-    });
-}
