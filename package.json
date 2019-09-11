@@ -25,7 +25,7 @@
     "@atomist/sdm-core": "^1.5.2",
     "@atomist/sdm-pack-build": "^1.0.4",
     "@atomist/sdm-pack-docker": "^1.2.0",
-    "@atomist/sdm-pack-k8s": "^1.5.1",
+    "@atomist/sdm-pack-k8s": "^1.10.0",
     "@atomist/sdm-pack-node": "^1.1.0",
     "@kubernetes/client-node": "^0.10.2",
     "lodash": "^4.17.11"
